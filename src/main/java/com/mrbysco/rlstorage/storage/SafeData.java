@@ -25,16 +25,16 @@ public class SafeData extends SavedData {
 	}
 
 	public static SafeData load(CompoundTag tag) {
-		ListTag baseChestsList = tag.getList("safes", 10);
+		ListTag safesList = tag.getList("safes", 10);
 		Map<UUID, SafeInventory> safeMap = new HashMap<>();
 
-		for (int i = 0; i < baseChestsList.size(); ++i) {
-			CompoundTag listTag = baseChestsList.getCompound(i);
+		for (int i = 0; i < safesList.size(); ++i) {
+			CompoundTag listTag = safesList.getCompound(i);
 			UUID uuid = listTag.getUUID("Owner");
-			int chestSize = listTag.getInt("SafeSize");
-			ListTag chestTag = listTag.getList("Safe", 10);
-			SafeInventory inventory = new SafeInventory(chestSize);
-			inventory.fromTag(chestTag);
+			int safeSize = listTag.getInt("SafeSize");
+			ListTag safeTag = listTag.getList("Safe", 10);
+			SafeInventory inventory = new SafeInventory(safeSize);
+			inventory.fromTag(safeTag);
 			safeMap.put(uuid, inventory);
 		}
 
@@ -45,11 +45,11 @@ public class SafeData extends SavedData {
 		ListTag safeList = new ListTag();
 
 		for (Map.Entry<UUID, SafeInventory> entry : this.safeMap.entrySet()) {
-			CompoundTag baseChestsTag = new CompoundTag();
-			baseChestsTag.putUUID("Owner", entry.getKey());
-			baseChestsTag.putInt("SafeSize", (entry.getValue()).getContainerSize());
-			baseChestsTag.put("Safe", (entry.getValue()).of());
-			safeList.add(baseChestsTag);
+			CompoundTag safesTag = new CompoundTag();
+			safesTag.putUUID("Owner", entry.getKey());
+			safesTag.putInt("SafeSize", (entry.getValue()).getContainerSize());
+			safesTag.put("Safe", (entry.getValue()).of());
+			safeList.add(safesTag);
 		}
 
 		tag.put("safes", safeList);
