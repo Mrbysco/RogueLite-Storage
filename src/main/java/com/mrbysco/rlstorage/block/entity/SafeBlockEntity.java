@@ -9,14 +9,13 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.UUID;
 
 public class SafeBlockEntity extends BlockEntity {
 	public SafeBlockEntity(BlockPos pos, BlockState state) {
-		super((BlockEntityType) RLRegistry.SAFE_BLOCK_ENTITY.get(), pos, state);
+		super(RLRegistry.SAFE_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public Component getDisplayName() {
@@ -28,9 +27,9 @@ public class SafeBlockEntity extends BlockEntity {
 			return false;
 		} else {
 			return !(player.distanceToSqr(
-					(double)this.worldPosition.getX() + 0.5D,
-					(double)this.worldPosition.getY() + 0.5D,
-					(double)this.worldPosition.getZ() + 0.5D) > 64.0D);
+					(double) this.worldPosition.getX() + 0.5D,
+					(double) this.worldPosition.getY() + 0.5D,
+					(double) this.worldPosition.getZ() + 0.5D) > 64.0D);
 		}
 	}
 
