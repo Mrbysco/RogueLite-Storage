@@ -25,7 +25,7 @@ public class RLRegistry {
 			new SafeBlock(Properties.of(Material.HEAVY_METAL, MaterialColor.METAL).requiresCorrectToolForDrops()
 					.strength(5.0F, 1200.0F).sound(SoundType.ANVIL)));
 	public static final RegistryObject<BlockEntityType<?>> SAFE_BLOCK_ENTITY = BLOCK_ENTITIES.register("safe", () ->
-			Builder.of(SafeBlockEntity::new, new Block[]{SAFE.get()}).build(null));
+			Builder.of(SafeBlockEntity::new, SAFE.get()).build(null));
 	public static final RegistryObject<Item> SAFE_ITEM = ITEMS.register("safe", () ->
 			new BlockItem(SAFE.get(), (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
 }
