@@ -1,13 +1,13 @@
 modLoader="javafml"
 loaderVersion="[40,)"
-#issueTrackerURL="https://github.com/Mrbysco/flatterentities"
+issueTrackerURL="https://github.com/Mrbysco/RogueLite-Storage/issues"
 license="MIT"
 
 [[mods]]
 modId="roguelitestorage"
 version="${file.jarVersion}"
 displayName="Roguelite Storage"
-#displayURL="https://www.curseforge.com/minecraft/mc-mods/"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/roguelite-storage"
 authors="Mrbysco"
 description='''
 RogueLite Storage progression solution for hardcore packs
