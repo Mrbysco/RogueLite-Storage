@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -88,7 +89,8 @@ public class SafeBlock extends BaseEntityBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	protected void createBlockStateDefinition(StateDefinition.Builder stateBuilder) {
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
 		stateBuilder.add(FACING, OPEN);
 	}
 }
