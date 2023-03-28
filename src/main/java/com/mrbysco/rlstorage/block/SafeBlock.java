@@ -54,7 +54,7 @@ public class SafeBlock extends BaseEntityBlock {
 				if (player.isShiftKeyDown()) {
 					BlockState newState = (BlockState) state.setValue(OPEN, !(Boolean) state.getValue(OPEN));
 					level.setBlock(pos, newState, 3);
-					level.playSound((Player) null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+					level.playSound((Player) null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 					return InteractionResult.CONSUME;
 				} else {
 					SimpleContainer safeContainer = safeBlockEntity.getInventory(player.getUUID(), level);

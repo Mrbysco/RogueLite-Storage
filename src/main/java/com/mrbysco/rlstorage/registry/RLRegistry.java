@@ -4,7 +4,6 @@ import com.mrbysco.rlstorage.RogueLiteStorage;
 import com.mrbysco.rlstorage.block.SafeBlock;
 import com.mrbysco.rlstorage.block.entity.SafeBlockEntity;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -27,5 +26,5 @@ public class RLRegistry {
 	public static final RegistryObject<BlockEntityType<?>> SAFE_BLOCK_ENTITY = BLOCK_ENTITIES.register("safe", () ->
 			Builder.of(SafeBlockEntity::new, SAFE.get()).build(null));
 	public static final RegistryObject<Item> SAFE_ITEM = ITEMS.register("safe", () ->
-			new BlockItem(SAFE.get(), (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+			new BlockItem(SAFE.get(), (new Item.Properties())));
 }
