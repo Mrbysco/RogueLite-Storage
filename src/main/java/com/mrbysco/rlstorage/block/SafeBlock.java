@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -38,7 +37,7 @@ public class SafeBlock extends BaseEntityBlock {
 
 	public SafeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.registerDefaultState((BlockState) ((BlockState) ((BlockState) this.stateDefinition.any()).setValue(FACING, Direction.NORTH)).setValue(OPEN, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
 	}
 
 	public RenderShape getRenderShape(BlockState state) {
@@ -52,13 +51,11 @@ public class SafeBlock extends BaseEntityBlock {
 		if (level.getBlockEntity(pos) instanceof SafeBlockEntity safeBlockEntity) {
 			if (handIn == InteractionHand.MAIN_HAND) {
 				if (player.isShiftKeyDown()) {
-					if (!level.isClientSide) {
-						BlockState newState = (BlockState) state.setValue(OPEN, !(Boolean) state.getValue(OPEN));
-						level.setBlock(pos, newState, 3);
-						level.playSound((Player) null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
-						return InteractionResult.CONSUME;
-					}
-				} else if (!level.isClientSide) {
+					BlockState newState = (BlockState) state.setValue(OPEN, !(Boolean) state.getValue(OPEN));
+					level.setBlock(pos, newState, 3);
+					level.playSound((Player) null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+					return InteractionResult.CONSUME;
+				} else {
 					SimpleContainer safeContainer = safeBlockEntity.getInventory(player.getUUID(), level);
 					SafeInventory safeInventory = safeContainer == null ? safeBlockEntity.getInventory(player.getUUID(), level) : (SafeInventory) safeContainer;
 					if (safeInventory != null) {
@@ -80,18 +77,18 @@ public class SafeBlock extends BaseEntityBlock {
 	}
 
 	public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
-		return (BlockState) this.defaultBlockState().setValue(FACING, placeContext.getHorizontalDirection().getOpposite());
+		return this.defaultBlockState().setValue(FACING, placeContext.getHorizontalDirection().getOpposite());
 	}
 
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return (BlockState) state.setValue(FACING, rotation.rotate((Direction) state.getValue(FACING)));
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation((Direction) state.getValue(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	protected void createBlockStateDefinition(StateDefinition.Builder stateBuilder) {
-		stateBuilder.add(new Property[]{FACING, OPEN});
+		stateBuilder.add(FACING, OPEN);
 	}
 }
