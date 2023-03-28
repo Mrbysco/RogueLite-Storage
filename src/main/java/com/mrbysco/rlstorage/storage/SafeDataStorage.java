@@ -42,7 +42,7 @@ public class SafeDataStorage {
 		if (data != null) {
 			return data;
 		} else {
-			SavedData data1 = (SavedData) dataSupplier.get();
+			SavedData data1 = dataSupplier.get();
 			this.set(id, data1);
 			return data1;
 		}
@@ -50,7 +50,7 @@ public class SafeDataStorage {
 
 	@Nullable
 	public SavedData get(Function<CompoundTag, SavedData> savedDataFunction, String id) {
-		SavedData saveddata = (SavedData) this.cache.get(id);
+		SavedData saveddata = this.cache.get(id);
 		if (saveddata == DummySavedData.DUMMY) {
 			return null;
 		} else {
@@ -72,13 +72,13 @@ public class SafeDataStorage {
 			File file1 = this.getDataFile(id);
 			if (file1.exists()) {
 				CompoundTag compoundtag = this.readTagFromDisk(id, SharedConstants.getCurrentVersion().getWorldVersion());
-				return (SavedData) function.apply(compoundtag.getCompound("data"));
+				return function.apply(compoundtag.getCompound("data"));
 			}
 		} catch (Exception var5) {
 			LOGGER.error("Error loading saved data: {}", id, var5);
 		}
 
-		return (SavedData) null;
+		return null;
 	}
 
 	public void set(String name, SavedData savedData) {
