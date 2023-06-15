@@ -6,12 +6,11 @@ import com.mrbysco.rlstorage.block.entity.SafeBlockEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.Builder;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,7 +20,7 @@ public class RLRegistry {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RogueLiteStorage.MOD_ID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, RogueLiteStorage.MOD_ID);
 	public static final RegistryObject<Block> SAFE = BLOCKS.register("safe", () ->
-			new SafeBlock(Properties.of(Material.HEAVY_METAL, MaterialColor.METAL).requiresCorrectToolForDrops()
+			new SafeBlock(Properties.copy(Blocks.ANVIL).requiresCorrectToolForDrops()
 					.strength(5.0F, 1200.0F).sound(SoundType.ANVIL)));
 	public static final RegistryObject<BlockEntityType<?>> SAFE_BLOCK_ENTITY = BLOCK_ENTITIES.register("safe", () ->
 			Builder.of(SafeBlockEntity::new, SAFE.get()).build(null));
