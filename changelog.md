@@ -1,1 +1,1 @@
-* Initial update to 1.20 (Still has no recipe by default)
+* Initial update to 1.20.2 NeoForge
