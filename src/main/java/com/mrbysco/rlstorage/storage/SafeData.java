@@ -72,7 +72,8 @@ public class SafeData extends SavedData {
 		if (!(level instanceof ServerLevel)) {
 			throw new RuntimeException("Attempted to get the data from a client level. This is wrong.");
 		} else {
-			return (SafeData) Reference.getVaultDataStorage(level.getServer()).computeIfAbsent(SafeData::load, SafeData::new, DATA_NAME);
+			return (SafeData) Reference.getVaultDataStorage(level.getServer())
+					.computeIfAbsent(new SavedData.Factory<>(SafeData::new, SafeData::load), DATA_NAME);
 		}
 	}
 }

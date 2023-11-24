@@ -33,7 +33,15 @@ public class SafeBlockEntity extends BlockEntity {
 	}
 
 	public SafeInventory getInventory(UUID uuid, Level level) {
-		return level.isClientSide ? null : this.getVaultData(level).getInventoryFromUUID(uuid);
+		if (level.isClientSide) {
+			return null;
+		}
+		SafeInventory inventory = this.getVaultData(level).getInventoryFromUUID(uuid);
+		if (inventory == null) {
+			//Usually happens the first time the vault nbt file is created
+			inventory = this.getVaultData(level).getInventoryFromUUID(uuid);
+		}
+		return inventory;
 	}
 
 	public SafeData getVaultData(Level level) {

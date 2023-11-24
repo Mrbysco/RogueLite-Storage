@@ -9,7 +9,6 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraftforge.common.util.DummySavedData;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.io.PushbackInputStream;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class SafeDataStorage {
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -37,41 +35,37 @@ public class SafeDataStorage {
 		return new File(this.dataFolder, name + ".dat");
 	}
 
-	public SavedData computeIfAbsent(Function<CompoundTag, SavedData> savedDataFunction, Supplier<SavedData> dataSupplier, String id) {
-		SavedData data = this.get(savedDataFunction, id);
-		if (data != null) {
-			return data;
+	public <T extends SavedData> T computeIfAbsent(SavedData.Factory<T> factory, String id) {
+		T t = this.get(factory, id);
+		if (t != null) {
+			return t;
 		} else {
-			SavedData data1 = dataSupplier.get();
-			this.set(id, data1);
-			return data1;
+			T t1 = factory.constructor().get();
+			this.set(id, t1);
+			return t1;
 		}
 	}
 
 	@Nullable
-	public SavedData get(Function<CompoundTag, SavedData> savedDataFunction, String id) {
+	public <T extends SavedData> T get(SavedData.Factory factory, String id) {
 		SavedData saveddata = this.cache.get(id);
-		if (saveddata == DummySavedData.DUMMY) {
+		if (saveddata == net.neoforged.neoforge.common.util.DummySavedData.DUMMY) return null;
+		if (saveddata == null && !this.cache.containsKey(id)) {
+			saveddata = this.readSavedData(factory.deserializer(), factory.type(), id);
+			this.cache.put(id, saveddata);
+		} else if (saveddata == null) {
+			this.cache.put(id, net.neoforged.neoforge.common.util.DummySavedData.DUMMY);
 			return null;
-		} else {
-			if (saveddata == null && !this.cache.containsKey(id)) {
-				saveddata = this.readSavedData(savedDataFunction, id);
-				this.cache.put(id, saveddata);
-			} else if (saveddata == null) {
-				this.cache.put(id, DummySavedData.DUMMY);
-				return null;
-			}
-
-			return saveddata;
 		}
+		return (T) saveddata;
 	}
 
 	@Nullable
-	private SavedData readSavedData(Function<CompoundTag, SavedData> function, String id) {
+	private SavedData readSavedData(Function<CompoundTag, SavedData> function, @Nullable DataFixTypes fixTypes, String id) {
 		try {
 			File file1 = this.getDataFile(id);
 			if (file1.exists()) {
-				CompoundTag compoundtag = this.readTagFromDisk(id, SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+				CompoundTag compoundtag = this.readTagFromDisk(id, fixTypes, SharedConstants.getCurrentVersion().getDataVersion().getVersion());
 				return function.apply(compoundtag.getCompound("data"));
 			}
 		} catch (Exception var5) {
@@ -85,7 +79,7 @@ public class SafeDataStorage {
 		this.cache.put(name, savedData);
 	}
 
-	public CompoundTag readTagFromDisk(String id, int levelVersion) throws IOException {
+	public CompoundTag readTagFromDisk(String id, @Nullable DataFixTypes fixTypes, int levelVersion) throws IOException {
 		File file1 = this.getDataFile(id);
 
 		CompoundTag compoundtag1;
@@ -102,8 +96,12 @@ public class SafeDataStorage {
 				}
 			}
 
-			int i = NbtUtils.getDataVersion(compoundtag, 1343);
-			compoundtag1 = DataFixTypes.SAVED_DATA.update(this.fixerUpper, compoundtag, i, levelVersion);
+			if (fixTypes != null) {
+				int i = NbtUtils.getDataVersion(compoundtag, 1343);
+				compoundtag1 = fixTypes.update(this.fixerUpper, compoundtag, i, levelVersion);
+			} else {
+				compoundtag1 = compoundtag;
+			}
 		}
 
 		return compoundtag1;
