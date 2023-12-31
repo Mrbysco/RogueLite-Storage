@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
 
@@ -15,8 +14,7 @@ public class RogueLiteStorage {
 	public static final String MOD_ID = "roguelitestorage";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public RogueLiteStorage() {
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public RogueLiteStorage(IEventBus eventBus) {
 		RLRegistry.BLOCKS.register(eventBus);
 		RLRegistry.BLOCK_ENTITIES.register(eventBus);
 		RLRegistry.ITEMS.register(eventBus);

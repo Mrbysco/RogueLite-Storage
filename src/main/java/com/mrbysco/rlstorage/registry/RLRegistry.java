@@ -21,7 +21,7 @@ public class RLRegistry {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(RogueLiteStorage.MOD_ID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, RogueLiteStorage.MOD_ID);
 	public static final DeferredBlock<SafeBlock> SAFE = BLOCKS.register("safe", () ->
-			new SafeBlock(Properties.copy(Blocks.ANVIL).requiresCorrectToolForDrops()
+			new SafeBlock(Properties.ofFullCopy(Blocks.ANVIL).requiresCorrectToolForDrops()
 					.strength(5.0F, 1200.0F).sound(SoundType.ANVIL)));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SafeBlockEntity>> SAFE_BLOCK_ENTITY = BLOCK_ENTITIES.register("safe", () ->
 			Builder.of(SafeBlockEntity::new, SAFE.get()).build(null));

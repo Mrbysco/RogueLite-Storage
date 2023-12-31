@@ -1,6 +1,6 @@
 package com.mrbysco.rlstorage.block;
 
-import com.mrbysco.rlstorage.RogueLiteStorage;
+import com.mojang.serialization.MapCodec;
 import com.mrbysco.rlstorage.block.entity.SafeBlockEntity;
 import com.mrbysco.rlstorage.storage.SafeInventory;
 import net.minecraft.core.BlockPos;
@@ -34,8 +34,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 
 public class SafeBlock extends BaseEntityBlock {
+	public static final MapCodec<SafeBlock> CODEC = simpleCodec(SafeBlock::new);
+
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+
+	@Override
+	public MapCodec<SafeBlock> codec() {
+		return CODEC;
+	}
 
 	public SafeBlock(BlockBehaviour.Properties properties) {
 		super(properties);

@@ -5,6 +5,7 @@ import com.mojang.datafixers.DataFixer;
 import com.mojang.logging.LogUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.datafix.DataFixTypes;
@@ -89,7 +90,7 @@ public class SafeDataStorage {
 		) {
 			CompoundTag compoundtag;
 			if (this.isGzip(pushbackinputstream)) {
-				compoundtag = NbtIo.readCompressed(pushbackinputstream);
+				compoundtag = NbtIo.readCompressed(pushbackinputstream, NbtAccounter.unlimitedHeap());
 			} else {
 				try (DataInputStream datainputstream = new DataInputStream(pushbackinputstream)) {
 					compoundtag = NbtIo.read(datainputstream);
