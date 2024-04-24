@@ -1,6 +1,7 @@
 package com.mrbysco.rlstorage.storage;
 
 import com.mrbysco.rlstorage.block.entity.SafeBlockEntity;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.SimpleContainer;
@@ -28,13 +29,14 @@ public class SafeInventory extends SimpleContainer {
 			CompoundTag compoundTag = listTag.getCompound(k);
 			int j = compoundTag.getByte("Slot") & 255;
 			if (j >= 0 && j < this.getContainerSize()) {
-				this.setItem(j, ItemStack.of(compoundTag));
+				this.setItem(j, ItemStack.parse(VanillaRegistries.createLookup(), compoundTag).orElse(ItemStack.EMPTY));
 			}
 		}
 
 	}
 
 	public ListTag of() {
+		var lookup = VanillaRegistries.createLookup();
 		ListTag listTag = new ListTag();
 
 		for (int i = 0; i < this.getContainerSize(); ++i) {
@@ -42,7 +44,7 @@ public class SafeInventory extends SimpleContainer {
 			if (!itemstack.isEmpty()) {
 				CompoundTag compoundTag = new CompoundTag();
 				compoundTag.putByte("Slot", (byte) i);
-				itemstack.save(compoundTag);
+				listTag.add(itemstack.save(lookup, compoundTag));
 				listTag.add(compoundTag);
 			}
 		}

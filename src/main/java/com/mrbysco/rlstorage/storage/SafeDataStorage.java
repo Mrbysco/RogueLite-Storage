@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.logging.LogUtils;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
@@ -19,17 +20,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PushbackInputStream;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class SafeDataStorage {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private final Map<String, SavedData> cache = Maps.newHashMap();
 	private final DataFixer fixerUpper;
 	private final File dataFolder;
+	private final HolderLookup.Provider registries;
 
-	public SafeDataStorage(File file, DataFixer dataFixer) {
+	public SafeDataStorage(File file, DataFixer dataFixer, HolderLookup.Provider provider) {
 		this.fixerUpper = dataFixer;
 		this.dataFolder = file;
+		this.registries = provider;
 	}
 
 	private File getDataFile(String name) {
@@ -62,12 +65,12 @@ public class SafeDataStorage {
 	}
 
 	@Nullable
-	private SavedData readSavedData(Function<CompoundTag, SavedData> function, @Nullable DataFixTypes fixTypes, String id) {
+	private SavedData readSavedData(BiFunction<CompoundTag, HolderLookup.Provider, SavedData> function, @Nullable DataFixTypes fixTypes, String id) {
 		try {
 			File file1 = this.getDataFile(id);
 			if (file1.exists()) {
 				CompoundTag compoundtag = this.readTagFromDisk(id, fixTypes, SharedConstants.getCurrentVersion().getDataVersion().getVersion());
-				return function.apply(compoundtag.getCompound("data"));
+				return function.apply(compoundtag.getCompound("data"), this.registries);
 			}
 		} catch (Exception var5) {
 			LOGGER.error("Error loading saved data: {}", id, var5);
@@ -129,7 +132,7 @@ public class SafeDataStorage {
 	public void save() {
 		this.cache.forEach((id, data) -> {
 			if (data != null) {
-				data.save(this.getDataFile(id));
+				data.save(this.getDataFile(id), this.registries);
 			}
 		});
 	}

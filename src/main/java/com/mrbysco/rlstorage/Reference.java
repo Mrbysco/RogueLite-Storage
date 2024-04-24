@@ -13,7 +13,7 @@ public class Reference {
 	public static SafeDataStorage getVaultDataStorage(MinecraftServer server) {
 		if (safeDataStorage == null || !storageFolder.exists()) {
 			storageFolder.mkdirs();
-			return safeDataStorage = new SafeDataStorage(storageFolder, server.getFixerUpper());
+			return safeDataStorage = new SafeDataStorage(storageFolder, server.getFixerUpper(), server.registryAccess());
 		} else {
 			return safeDataStorage;
 		}

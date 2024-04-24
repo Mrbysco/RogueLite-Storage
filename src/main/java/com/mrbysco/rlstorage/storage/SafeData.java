@@ -1,6 +1,7 @@
 package com.mrbysco.rlstorage.storage;
 
 import com.mrbysco.rlstorage.Reference;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +25,7 @@ public class SafeData extends SavedData {
 		this.safeMap.putAll(safeMap);
 	}
 
-	public static SafeData load(CompoundTag tag) {
+	public static SafeData load(CompoundTag tag, HolderLookup.Provider provider) {
 		ListTag safesList = tag.getList("safes", 10);
 		Map<UUID, SafeInventory> safeMap = new HashMap<>();
 
@@ -41,7 +42,7 @@ public class SafeData extends SavedData {
 		return new SafeData(safeMap);
 	}
 
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
 		ListTag safeList = new ListTag();
 
 		for (Map.Entry<UUID, SafeInventory> entry : this.safeMap.entrySet()) {
