@@ -47,8 +47,8 @@ public class PatchDatagen {
 		}
 
 		public static class PatchBlockLoot extends BlockLootSubProvider {
-			protected PatchBlockLoot() {
-				super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+			protected PatchBlockLoot(HolderLookup.Provider provider) {
+				super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
 			}
 
 			@Override
