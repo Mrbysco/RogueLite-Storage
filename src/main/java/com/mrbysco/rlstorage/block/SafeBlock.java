@@ -8,7 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ public class SafeBlock extends BaseEntityBlock {
 	public static final MapCodec<SafeBlock> CODEC = simpleCodec(SafeBlock::new);
 
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
 	@Override
 	public MapCodec<SafeBlock> codec() {
@@ -54,9 +54,9 @@ public class SafeBlock extends BaseEntityBlock {
 		return RenderShape.MODEL;
 	}
 
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
 		if (level.isClientSide) {
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 		if (level.getBlockEntity(pos) instanceof SafeBlockEntity safeBlockEntity) {
 			if (handIn == InteractionHand.MAIN_HAND) {
@@ -64,7 +64,7 @@ public class SafeBlock extends BaseEntityBlock {
 					BlockState newState = (BlockState) state.setValue(OPEN, !(Boolean) state.getValue(OPEN));
 					level.setBlock(pos, newState, 3);
 					level.playSound((Player) null, pos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
-					return ItemInteractionResult.CONSUME;
+					return InteractionResult.CONSUME;
 				} else {
 					SimpleContainer safeContainer = safeBlockEntity.getInventory(player.getUUID(), level);
 					SafeInventory safeInventory = safeContainer == null ? safeBlockEntity.getInventory(player.getUUID(), level) : (SafeInventory) safeContainer;
@@ -72,7 +72,7 @@ public class SafeBlock extends BaseEntityBlock {
 						safeInventory.setAssociatedVault(safeBlockEntity);
 						player.openMenu(new SimpleMenuProvider((id, inventory, playerIn) ->
 								new ChestMenu(MenuType.GENERIC_9x1, id, inventory, safeContainer, 1), safeBlockEntity.getDisplayName()));
-						return ItemInteractionResult.CONSUME;
+						return InteractionResult.CONSUME;
 					}
 				}
 			}

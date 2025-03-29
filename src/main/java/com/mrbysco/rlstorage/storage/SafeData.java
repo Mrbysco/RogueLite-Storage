@@ -64,7 +64,7 @@ public class SafeData extends SavedData {
 	public void setDirty() {
 		super.setDirty();
 		if (Reference.safeDataStorage != null) {
-			Reference.safeDataStorage.save();
+			Reference.safeDataStorage.scheduleSave().join();
 		}
 
 	}

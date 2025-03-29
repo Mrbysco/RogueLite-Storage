@@ -26,17 +26,14 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class PatchDatagen {
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
+	public static void gatherData(GatherDataEvent.Client event) {
 		DataGenerator generator = event.getGenerator();
 		PackOutput packOutput = generator.getPackOutput();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-		if (event.includeServer()) {
-			generator.addProvider(event.includeServer(), new Loots(packOutput, lookupProvider));
-		}
-		if (event.includeClient()) {
-			generator.addProvider(event.includeClient(), new Language(packOutput));
-		}
+		generator.addProvider(true, new Loots(packOutput, lookupProvider));
+
+		generator.addProvider(true, new Language(packOutput));
 	}
 
 	private static class Loots extends LootTableProvider {
