@@ -4,7 +4,7 @@ import com.mrbysco.rlstorage.menu.SafeMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,17 +20,17 @@ public class SafeScreen extends AbstractContainerScreen<SafeMenu> implements Men
 	}
 
 	@Override
-	public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(graphics, mouseX, mouseY, partialTicks);
+		renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float p_282334_, int p_282603_, int p_282158_) {
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		graphics.blit(RenderType::guiTextured, CONTAINER_BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, 35, 256, 256);
-		graphics.blit(RenderType::guiTextured, CONTAINER_BACKGROUND, i, j + 35, 0.0F, 126.0F, this.imageWidth, 96, 256, 256);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, 35, 256, 256);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, i, j + 35, 0.0F, 126.0F, this.imageWidth, 96, 256, 256);
 	}
 
 	@Override
