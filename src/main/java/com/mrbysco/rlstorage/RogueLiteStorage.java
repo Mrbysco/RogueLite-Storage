@@ -1,9 +1,11 @@
 package com.mrbysco.rlstorage;
 
 import com.mojang.logging.LogUtils;
+import com.mrbysco.rlstorage.client.ClientHandler;
 import com.mrbysco.rlstorage.registry.RLRegistry;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -14,12 +16,17 @@ public class RogueLiteStorage {
 	public static final String MOD_ID = "roguelitestorage";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public RogueLiteStorage(IEventBus eventBus) {
+	public RogueLiteStorage(IEventBus eventBus, Dist dist) {
 		RLRegistry.BLOCKS.register(eventBus);
 		RLRegistry.BLOCK_ENTITIES.register(eventBus);
 		RLRegistry.ITEMS.register(eventBus);
+		RLRegistry.MENU_TYPES.register(eventBus);
 
 		eventBus.addListener(this::buildCreativeContents);
+
+		if (dist.isClient()) {
+			eventBus.addListener(ClientHandler::registerMenuScreens);
+		}
 	}
 
 	private void buildCreativeContents(BuildCreativeModeTabContentsEvent event) {
