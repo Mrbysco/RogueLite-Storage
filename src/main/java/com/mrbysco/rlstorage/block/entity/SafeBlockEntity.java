@@ -33,7 +33,7 @@ public class SafeBlockEntity extends BlockEntity {
 	}
 
 	public SafeInventory getInventory(UUID uuid, Level level) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			return null;
 		}
 

@@ -54,7 +54,7 @@ public class SafeBlock extends BaseEntityBlock {
 	}
 
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			return InteractionResult.SUCCESS;
 		}
 		if (level.getBlockEntity(pos) instanceof SafeBlockEntity safeBlockEntity) {

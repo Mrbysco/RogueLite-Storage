@@ -55,7 +55,7 @@ public class SafeInventory extends SimpleContainer {
 
 	public void stopOpen(Player player) {
 		super.stopOpen(player);
-		if (!player.level().isClientSide) {
+		if (!player.level().isClientSide()) {
 			SafeData.get(player.level()).setDirty();
 		}
 
