@@ -49,10 +49,12 @@ public class SafeBlock extends BaseEntityBlock {
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
 	}
 
+	@Override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
+	@Override
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
 		if (level.isClientSide()) {
 			return InteractionResult.SUCCESS;
@@ -85,14 +87,17 @@ public class SafeBlock extends BaseEntityBlock {
 		return new SafeBlockEntity(pos, state);
 	}
 
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
 		return this.defaultBlockState().setValue(FACING, placeContext.getHorizontalDirection().getOpposite());
 	}
 
+	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}

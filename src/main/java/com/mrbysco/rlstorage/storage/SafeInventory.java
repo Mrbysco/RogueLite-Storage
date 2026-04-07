@@ -123,7 +123,7 @@ public class SafeInventory extends SimpleContainer {
 	}
 
 	public ItemStack copyOne() {
-		return this.items.isEmpty() ? ItemStack.EMPTY : this.items.get(0).copy();
+		return this.items.isEmpty() ? ItemStack.EMPTY : this.items.getFirst().copy();
 	}
 
 	public Stream<ItemStack> stream() {

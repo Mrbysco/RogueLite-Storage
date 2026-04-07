@@ -37,6 +37,7 @@ public class SafeData extends SavedData {
 		return this.safeMap.computeIfAbsent(uuid, k -> new SafeInventory(9));
 	}
 
+	@Override
 	public void setDirty() {
 		super.setDirty();
 	}

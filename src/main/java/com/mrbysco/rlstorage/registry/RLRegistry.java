@@ -6,11 +6,8 @@ import com.mrbysco.rlstorage.block.entity.SafeBlockEntity;
 import com.mrbysco.rlstorage.menu.SafeMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,17 +26,13 @@ public class RLRegistry {
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, RogueLiteStorage.MOD_ID);
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, RogueLiteStorage.MOD_ID);
 
-	public static final DeferredBlock<SafeBlock> SAFE = BLOCKS.register("safe", () ->
-			new SafeBlock(Properties.ofFullCopy(Blocks.ANVIL).setId(blockKey("safe")).requiresCorrectToolForDrops()
-					.strength(5.0F, 1200.0F).sound(SoundType.ANVIL)));
+	public static final DeferredBlock<SafeBlock> SAFE = BLOCKS.registerBlock("safe", SafeBlock::new, () ->
+			Properties.ofFullCopy(Blocks.ANVIL).requiresCorrectToolForDrops()
+			.strength(5.0F, 1200.0F).sound(SoundType.ANVIL));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SafeBlockEntity>> SAFE_BLOCK_ENTITY = BLOCK_ENTITIES.register("safe", () ->
 			new BlockEntityType<>(SafeBlockEntity::new, SAFE.get()));
 	public static final DeferredItem<BlockItem> SAFE_ITEM = ITEMS.registerSimpleBlockItem(SAFE);
 
 	public static final Supplier<MenuType<SafeMenu>> SAFE_MENU = MENU_TYPES.register("safe_menu", () ->
 			IMenuTypeExtension.create(SafeMenu::new));
-
-	private static ResourceKey<Block> blockKey(String path) {
-		return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(RogueLiteStorage.MOD_ID, path));
-	}
 }

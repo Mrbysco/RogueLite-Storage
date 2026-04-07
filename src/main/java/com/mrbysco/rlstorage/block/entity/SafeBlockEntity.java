@@ -22,7 +22,7 @@ public class SafeBlockEntity extends BlockEntity {
 	}
 
 	public boolean stillValid(Player player) {
-		if (this.level.getBlockEntity(this.worldPosition) != this) {
+		if (this.level == null || this.level.getBlockEntity(this.worldPosition) != this) {
 			return false;
 		} else {
 			return !(player.distanceToSqr(

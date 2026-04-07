@@ -2,7 +2,6 @@ package com.mrbysco.rlstorage;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -16,8 +15,8 @@ public class Reference {
 		if (safeDataStorage == null || !storageFolder.exists()) {
 			storageFolder.mkdirs();
 			MinecraftServer server = level.getServer();
-			return safeDataStorage = new DimensionDataStorage(new SavedData.Context(level),
-					storageFolder.toPath(), server.getFixerUpper(), server.registryAccess());
+			return safeDataStorage = new DimensionDataStorage(level, storageFolder.toPath(),
+					server.getFixerUpper(), server.registryAccess());
 		} else {
 			return safeDataStorage;
 		}
