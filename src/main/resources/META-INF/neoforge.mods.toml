@@ -15,13 +15,13 @@ RogueLite Storage progression solution for hardcore packs
 [[dependencies.roguelitestorage]]
 modId="minecraft"
 type="REQUIRED"
-versionRange="[1.21.11,1.22)"
+versionRange="[26.1.1,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.roguelitestorage]]
 modId="neoforge"
 type="REQUIRED"
-versionRange="[21.11.0-beta,)"
+versionRange="[26.1.1.0-alpha,)"
 ordering="NONE"
 side="BOTH"
 [[mixins]]

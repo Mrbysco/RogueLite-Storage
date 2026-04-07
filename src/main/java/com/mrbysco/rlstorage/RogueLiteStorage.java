@@ -2,6 +2,7 @@ package com.mrbysco.rlstorage;
 
 import com.mojang.logging.LogUtils;
 import com.mrbysco.rlstorage.registry.RLRegistry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
@@ -27,5 +28,9 @@ public class RogueLiteStorage {
 		if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
 			event.accept(new ItemStack(RLRegistry.SAFE_ITEM.get()));
 		}
+	}
+
+	public static Identifier modLoc(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

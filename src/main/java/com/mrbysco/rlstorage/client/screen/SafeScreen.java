@@ -1,7 +1,7 @@
 package com.mrbysco.rlstorage.client.screen;
 
 import com.mrbysco.rlstorage.menu.SafeMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -14,28 +14,21 @@ public class SafeScreen extends AbstractContainerScreen<SafeMenu> implements Men
 	private static final Identifier CONTAINER_BACKGROUND = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
 
 	public SafeScreen(SafeMenu container, Inventory playerInventory, Component title) {
-		super(container, playerInventory, title);
-		this.imageHeight = 132;
+		super(container, playerInventory, title, 132, 166);
 		this.inventoryLabelY = this.imageHeight - 94;
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(graphics, mouseX, mouseY, partialTicks);
-		renderTooltip(graphics, mouseX, mouseY);
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+		extractTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics graphics, float p_282334_, int p_282603_, int p_282158_) {
+	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		graphics.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, 35, 256, 256);
 		graphics.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, i, j + 35, 0.0F, 126.0F, this.imageWidth, 96, 256, 256);
 	}
-
-	@Override
-	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		super.renderLabels(graphics, mouseX, mouseY);
-	}
-
 }

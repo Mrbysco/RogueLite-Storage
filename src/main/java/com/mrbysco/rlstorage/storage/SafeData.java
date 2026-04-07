@@ -3,7 +3,9 @@ package com.mrbysco.rlstorage.storage;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrbysco.rlstorage.Reference;
+import com.mrbysco.rlstorage.RogueLiteStorage;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -14,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SafeData extends SavedData {
-	private static final String DATA_NAME = "roguelitestorage_safe_data";
+	private static final Identifier DATA_NAME = RogueLiteStorage.modLoc("safe_data");
 
 	public static final Codec<SafeData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
 					Codec.unboundedMap(UUIDUtil.STRING_CODEC, SafeInventory.CODEC).fieldOf("infoMap")
